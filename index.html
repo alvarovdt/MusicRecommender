@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>LaSalle Music Recommender</title>
+  <script type='text/javascript' src='http://code.jquery.com/jquery-git.js'></script>
+  <script type='text/javascript' src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/music.css"/>
+  <link type="text/css" href="css/jquery-ui.css" rel="stylesheet" />
+   <script type="text/javascript" src="js/music.js"></script>
+   <script type="text/javascript" src="js/classie.js"></script>
+   <script type="text/javascript" src="js/spotify-web-api.js"></script>
+   <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+   <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+</head>
+<body>
+    
+	<div id="dialog" title="Selecciona la lista">
+		
+	</div>
+	
+	<div class="section conjunt">
+
+	  	<div class="coll part1_2">
+			<img src="img/logo.png" class="logo">
+		</div>
+
+	  	<div class="coll part2_2">
+			<h1>Busca tus artistas, albums o canciones aqui!!</h1>
+			<form id="search-form">
+				<input type="text" id="query" value="" placeholder="Buscar" class="form-control" />
+				<input type="submit" id="search" class="btn" value="Search" />
+			</form>
+		</div>
+
+  	</div>
+	
+	
+	<div class="section group">
+		<div class="col span_1_of_3">
+			<div class="usuario">
+				<h1>Bienvenido!</h1>
+			</div>
+			<ul>
+			   <li class='active' id="inicio"><h1><span>Inicio</span></h1></li>
+			   <li id="playlists"><h1><span>Playlists</span></h1></li>
+			   <li class='last' id="recomendaciones"><h1><span>Recomendaciones</span></h1></li>
+			</ul>
+			<div id="youtube">
+			</div>
+		</div>
+		<div class="col span_1_of_3">
+			<div id="info">
+				
+			</div>
+		</div>
+		<div class="col span_1_of_3">
+			<ul class="dropdown-list-container">
+				<li class="dropdown-list" id="artists"><h1><a href="#" dropdown-prop="title">Artistas</a></h1></li>
+				<li class="dropdown-list" id="albums"><h1><a href="#" dropdown-prop="title">Albums</a></h1></li>
+				<li class="dropdown-list" id="songs"><h1><a href="#" dropdown-prop="title">Canciones</a></h1></li>
+			</ul>
+		</div>
+	</div>
+  
+</body>
+
+
+</html>
