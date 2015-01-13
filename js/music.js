@@ -112,7 +112,7 @@ $(window).load(function(){
 		var code = artist_default;
 		code += "<ul class='dropdown-list-items'>";
 		for(var i=0; i<artists.length; i++){
-			code += "<li class='artist'>";
+			code += "<li class='artist' value="+i+">";
 			var ref;
 			if(artists[i].images.length > 0) {
 				ref = artists[i].images[0].url;
@@ -136,7 +136,7 @@ $(window).load(function(){
 		code = album_default;
 		code += "<ul class='dropdown-list-items'>";
 		for(var i=0; i<albums.length; i++){
-			code += "<li class='album'>";
+			code += "<li class='album' value="+i+">";
 			code += '<img src="' + albums[i].images[0].url + '">';
 			code += "<h3>" + albums[i].name + "</h3>";
 			code += "<p>" + albums[i].album_type + "</p>";
@@ -148,13 +148,13 @@ $(window).load(function(){
 		code = song_default;
 		code += "<ul class='dropdown-list-items'>";
 		for(var i=0; i<songs.length; i++){
-			code += "<li class='song'>";
+			code += "<li class='song' value="+i+">";
 			code += '<img src="' + songs[i].album.images[0].url + '">';
 			code += "<h3>" + songs[i].name + "</h3>";
 			code += "<p>" + songs[i].album.name + "</p>";
-			code += "<img id='icon' src='./img/add.png'>";
-			code += "<img id='icon' src='./img/spotify.png'>";
-			code += "<img id='icon' src='./img/youtube.png'>";
+			code += "<img id='icon' class='add' src='./img/add.png'>";
+			code += "<img id='icon' class='spotify' src='./img/spotify.png'>";
+			code += "<img id='icon' class='youtube_button' src='./img/youtube.png'>";
 			code += "</li>";
 		}
 		code += "</ul>";
@@ -182,7 +182,7 @@ $(window).load(function(){
 			var titulo = albums[i].name;
 			var caratula = albums[i].images[0].url;
 			
-			code += "<li class='album'>";
+			code += "<li class='album' value="+i+">";
 			code += "<img src='" + caratula + "'>";
 			code += "<h3>" + titulo + "</h3>";
 			code += "</li>";
@@ -214,7 +214,7 @@ $(window).load(function(){
 		//Crear un listado con las canciones del disco (cada una con opción de añadir a playlist, escuchar preview o buscar video de youtube)
 		code += "<ul>";
 			for(var i=0; i<songs.length; i++){
-				code += "<li class='song'>";
+				code += "<li class='song' value="+i+">";
 				code += "<h3>" + songs[i].name + "</h3>";
 				code += "<img id='icon' class='add' src='./img/add.png'>";
 				code += "<img id='icon' class='spotify' src='./img/spotify.png'>";
@@ -241,7 +241,7 @@ $(window).load(function(){
 		var code = "<h1><a href='#' dropdown-prop='title'>Albums más populares!</a></h1>";
 		code += "<ul>";
 		for(var i=0; i<10; i++){
-			code += "<li class='album'>";
+			code += "<li class='album' value="+i+">";
 			code += '<img src="' + imgAlbums[i] + '">';
 			code += "<h3>" + albums[i].name + "</h3>";
 			code += "<p>Popularidad: " + albums[i].popularity + "</p>";
@@ -310,69 +310,43 @@ $(window).load(function(){
 	
 	
 	  	var fillRecommendationsLayout = function(data){
-		var artists_recommended= document.getElementById("info");
-		console.log(data);
-		var artists = data.artists;
+			var artists_recommended= document.getElementById("info");
+			console.log(data);
+			var artists = data.artists;
 
-		var code = "<h1><a href='#' dropdown-prop='title'>Artistas recomendados</a></h1>";
-		code += "<ul>";
-		for(var i=0; i<10; i++){
-			code += "<li class='artist'>";
-			code += '<img src="' + artists[i].images[0].url + '">';
-			code += "<h3>" + artists[i].name + "</h3>";
-			code += "<p>"; 
-			for(var j=0; j<artists[i].genres.length; j++){
-				code += " ";
-				code += artists[i].genres[j];
-				code += ",";
+			var code = "<h1><a href='#' dropdown-prop='title'>Artistas recomendados</a></h1>";
+			code += "<ul>";
+			for(var i=0; i<10; i++){
+				code += "<li class='artist' value="+i+">";
+				code += '<img src="' + artists[i].images[0].url + '">';
+				code += "<h3>" + artists[i].name + "</h3>";
+				code += "<p>"; 
+				for(var j=0; j<artists[i].genres.length; j++){
+					code += " ";
+					code += artists[i].genres[j];
+					code += ",";
+				}
+				code += "</p>";
+				code += "</li>";
 			}
-			code += "</p>";
-			code += "</li>";
+			code += "</ul>";
+			artists_recommended.innerHTML = code;
+			
+			addInfoAlbumEvent(data.albums);
 		}
-		code += "</ul>";
-		artists_recommended.innerHTML = code;
-		
-		addInfoAlbumEvent(data.albums);
-	}
 
 	var addPlayPreviewEvent = function(songs,ini){
 		console.log("hola");
-		$('.spotify').click(function () {
-			
-			console.log("Hola otra vez");
+		$('.spotify').click(function (e) {
+			var pos = parseInt(e.currentTarget.parentNode.attributes[1].value);
+			console.log(pos);
 			var str = $('.song');
-			var cancion;
-			var album;
+			var cancion = songs[pos];
+			var album; 
 			if(ini){
-				cancion = str[0].childNodes[0].childNodes[0].data;
 				album = document.getElementById("titulo_album").innerHTML;
-				console.log(album);
-				console.log(songs);
-			}else{
-				cancion = str[0].childNodes[1].childNodes[0].data;
-				album = str[0].childNodes[2].childNodes[0].data;
-				
 			}
-			
-			
-			var album_name;
-			if(!songs[0].uri){
-				for(var i=0; i<songs.length; i++){
-					if(cancion == songs[i].name && album == songs[i].album.name){
-						console.log(songs[i].name);
-						playTrack(songs[i]);
-					}
-				}
-			}else{
-				for(var i=0; i<songs.length; i++){
-					if(cancion == songs[i].name){
-						console.log(songs[i].name);
-						playTrack(songs[i]);
-					}
-				}
-			}
-			
-				
+			playTrack(cancion);
 		});
 	};
 	
@@ -435,7 +409,23 @@ $(window).load(function(){
 	var addAddEvent = function(songs,ini){
 		//Identificar cancion
 		var track;
-		$('.add').click(function () {
+		$('.add').click(function (e) {
+			
+			var pos = parseInt(e.currentTarget.parentNode.attributes[1].value);
+			console.log(pos);
+			var str = $('.song');
+			var cancion = songs[pos];
+			var album_name; 
+			if(ini){
+				album_name = document.getElementById("titulo_album").innerHTML;
+			}
+			
+			track = songs[pos];
+			showPlaylistsDialog(track);
+		
+			
+			
+			/*
 			console.log("Hola otra vez");
 			var str = $('.song');
 			console.log(str);
@@ -468,7 +458,7 @@ $(window).load(function(){
 						showPlaylistsDialog(track);
 					}
 				}
-			}
+			}*/
 				
 		});
 
@@ -491,7 +481,7 @@ $(window).load(function(){
 		var code = "<h3>Vas a agregar " + track.name + " :</h3>";
 		code += "<ul>";
 		for(var i=0; i<playlists.length;i++){
-			code += "<li>";
+			code += "<li value="+i+">";
 			code += "<p>" + playlists[i] + "</p>";
 			code += "</li>";
 		}
