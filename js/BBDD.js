@@ -1,7 +1,7 @@
 var BBDD = {
 
 	 consulta: function(method, query){
-      url = "http://api.hipermedia.local/query";
+      url = "http://api.hipermedia.local/";
       var xhr = new XMLHttpRequest();
       xhr.open(method,url,false);
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
